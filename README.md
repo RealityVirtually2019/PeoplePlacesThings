@@ -20,5 +20,8 @@ AR apps to help people with special needs.
 3. In Unity, in click *Open*
 4. Navigate to your clone of the repository
 5. Select the *IKnowYou* folder, and click the *Select Folder* button
-6. After the project opens, make sure the *Unity C\# Projects* option
-   is selected in  *File > Build Settings...*
+6. After the project opens, make sure
+   - the *Unity C\# Projects* option is selected in *File > Build Settings...*
+   - the *CustomVisionScene* scene is open
+	 - In the *Projects* panel, navigate to *Assets > Scenes* and
+       click *CustomVisionScene*
