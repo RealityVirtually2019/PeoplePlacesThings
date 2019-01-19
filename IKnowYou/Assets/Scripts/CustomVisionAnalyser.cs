@@ -12,14 +12,19 @@ public class CustomVisionAnalyser : MonoBehaviour
     public static CustomVisionAnalyser Instance;
 
     /// <summary>
+    /// Insert your prediction endpoint here
+    /// </summary>
+    private string url = "https://southcentralus.api.cognitive.microsoft.com/customvision/v2.0/Prediction/";
+
+    /// <summary>
     /// Insert your Prediction Key here
     /// </summary>
     private string predictionKey = "56d07461c5f84e8bb7f8358cba4603a9";
 
     /// <summary>
-    /// Insert your prediction endpoint here
+    /// Insert your Project Id here
     /// </summary>
-    private string predictionEndpoint = "https://southcentralus.api.cognitive.microsoft.com/customvision/v2.0/Prediction/";
+    private string projectId = "2ca103b6-448b-48c3-8290-0699a1577e6d";
 
     /// <summary>
     /// Byte array of the image to submit for analysis
@@ -41,6 +46,7 @@ public class CustomVisionAnalyser : MonoBehaviour
     public IEnumerator AnalyseLastImageCaptured(string imagePath)
     {
         WWWForm webForm = new WWWForm();
+        string predictionEndpoint = string.Format("{0}{1}/image", url, projectId);
         using (UnityWebRequest unityWebRequest = UnityWebRequest.Post(predictionEndpoint, webForm))
         {
             // Gets a byte array out of the saved image
