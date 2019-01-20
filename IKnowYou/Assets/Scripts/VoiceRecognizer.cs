@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,12 +22,30 @@ public class VoiceRecognizer : MonoBehaviour
     /// </summary>
     private Dictionary<string, Action> _keywords = new Dictionary<string, Action>();
 
+    internal enum Commands { Hello, Again }
+
     /// <summary>
     /// Called on initialization
     /// </summary>
     private void Awake()
     {
         Instance = this;
+        Debug.Log("VoiceRecognizer.Awake");
+    }
+
+    internal void HandleCommand(string command)
+    //public IEnumerator HandleCommand(string command)
+    {
+        //Debug.LogFormat("command: ", command);
+        string s = "HandleCommand - command:" + command;
+        Debug.Log(s);
+        keywordRecognizer.Stop();
+
+        //yield return new WaitForSeconds(2);
+
+        DictationRecognizerBehaviour.dictationRecognizer.Start();
+        //DictationRecognizerBehaviour dictationRecognizerBehaviour = new DictationRecognizerBehaviour();
+        //dictationRecognizerBehaviour.dictationRecognizer.Start();
     }
 
     /// <summary>
@@ -34,18 +53,24 @@ public class VoiceRecognizer : MonoBehaviour
     /// </summary>
     void Start()
     {
+        Debug.Log("VoiceRecognizer.Start");
+        //Array commandArray = Enum.GetValues(typeof(CustomVisionTrainer.Tags));
+        Array commandArray = Enum.GetValues(typeof(Commands));
 
-        Array tagsArray = Enum.GetValues(typeof(CustomVisionTrainer.Tags));
-
-        foreach (object tagWord in tagsArray)
+        foreach (object command in commandArray)
         {
-            _keywords.Add(tagWord.ToString(), () =>
+            _keywords.Add(command.ToString(), () =>
             {
+                /*
                 // When a word is recognized, the following line will be called
                 CustomVisionTrainer.Instance.VerifyTag(tagWord.ToString());
+                */
+                //Debug.LogFormat("Word recognized: ", tagWord.ToString());
+                HandleCommand(command.ToString());
             });
         }
 
+        /*
         _keywords.Add("Discard", () =>
         {
             // When a word is recognized, the following line will be called
@@ -54,12 +79,14 @@ public class VoiceRecognizer : MonoBehaviour
             ImageCapture.Instance.ResetImageCapture();
             keywordRecognizer.Stop();
         });
+        */
 
         //Create the keyword recognizer 
         keywordRecognizer = new KeywordRecognizer(_keywords.Keys.ToArray());
 
         // Register for the OnPhraseRecognized event 
         keywordRecognizer.OnPhraseRecognized += KeywordRecognizer_OnPhraseRecognized;
+        keywordRecognizer.Start();
     }
 
     /// <summary>
@@ -67,11 +94,13 @@ public class VoiceRecognizer : MonoBehaviour
     /// </summary>
     private void KeywordRecognizer_OnPhraseRecognized(PhraseRecognizedEventArgs args)
     {
+        Debug.Log("1");
         Action keywordAction;
         // if the keyword recognized is in our dictionary, call that Action.
         if (_keywords.TryGetValue(args.text, out keywordAction))
         {
             keywordAction.Invoke();
+            //Debug.Log("1");
         }
     }
 }

@@ -36,7 +36,8 @@ public class CustomVisionTrainer : MonoBehaviour
     /// <summary>
     /// The Tags accepted
     /// </summary>
-    internal enum Tags { Mouse, Keyboard }
+    //internal enum Tags { Mouse, Keyboard, Hi }
+    internal enum Tags { Mouse, Keyboard, Hello, Again }
 
     /// <summary>
     /// The UI displaying the training Chapters
@@ -60,6 +61,20 @@ public class CustomVisionTrainer : MonoBehaviour
     }
 
     internal void RequestTagSelection()
+    {
+        trainingUI_TextMesh.gameObject.SetActive(true);
+        trainingUI_TextMesh.text = $" \nUse voice to say tag";
+
+        ////DictationRecognizerBehaviour dictationRecognizerBehaviour = new DictationRecognizerBehaviour();
+        ////dictationRecognizerBehaviour.dictationRecognizer.Start();
+        //VoiceRecognizer.Instance.keywordRecognizer.Start();
+        //DictationRecognizer dictationRecognizer = new DictationRecognizer();
+        //StartCoroutine(PendingAnnouncer(SayWhat, ForHowLong));
+        //CustomVisionTrainer.Instance.RequestTagSelection();
+        //DictationRecognizer.Instance.RequestTagSelection();
+    }
+
+    internal void RequestTagSelectionOrig()
     {
         trainingUI_TextMesh.gameObject.SetActive(true);
         trainingUI_TextMesh.text = $" \nUse voice command \nto choose between the following tags: \nMouse\nKeyboard \nor say Discard";
@@ -92,6 +107,7 @@ public class CustomVisionTrainer : MonoBehaviour
         string tagId = string.Empty;
 
         // Retrieving the Tag Id relative to the voice input
+        /*
         string getTagIdEndpoint = string.Format("{0}{1}/tags", url, projectId);
         using (UnityWebRequest www = UnityWebRequest.Get(getTagIdEndpoint))
         {
@@ -110,6 +126,7 @@ public class CustomVisionTrainer : MonoBehaviour
                 }
             }
         }
+        */
 
         // Creating the image object to send for training
         List<IMultipartFormSection> multipartList = new List<IMultipartFormSection>();
