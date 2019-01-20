@@ -60,8 +60,8 @@ public class ImageCapture : MonoBehaviour
         Instance = this;
 
         // Change this flag to switch between Analysis Mode and Training Mode 
-        //AppMode = AppModes.Training;
-        AppMode = AppModes.Analysis;
+        AppMode = AppModes.Training;
+        //AppMode = AppModes.Analysis;
     }
 
     /// <summary>
@@ -229,7 +229,7 @@ public class ImageCapture : MonoBehaviour
         SceneOrganiser.Instance.cursor.GetComponent<Renderer>().material.color = Color.green;
 
         // Update camera status to ready.
-        SceneOrganiser.Instance.SetCameraStatus("Ready");
+        //SceneOrganiser.Instance.SetCameraStatus("Ready");
 
         // Stop the capture loop if active
         CancelInvoke();

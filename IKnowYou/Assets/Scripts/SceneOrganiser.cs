@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class SceneOrganiser : MonoBehaviour
 {/// <summary>
@@ -55,10 +56,13 @@ public class SceneOrganiser : MonoBehaviour
         gameObject.AddComponent<CustomVisionTrainer>();
 
         // Add the VoiceRecogniser class to this GameObject
-        gameObject.AddComponent<VoiceRecognizer>();
+        //gameObject.AddComponent<VoiceRecognizer>();
 
         // Add the CustomVisionObjects class to this GameObject
         gameObject.AddComponent<CustomVisionObjects>();
+
+        // Add the DictationRecognizerBehaviour class to this GameObject
+        gameObject.AddComponent<DictationRecognizerBehaviour>();
 
         // Create the camera Cursor
         cursor = CreateCameraCursor();
@@ -152,7 +156,30 @@ public class SceneOrganiser : MonoBehaviour
                     break;
             }
 
-            cameraStatusIndicator.GetComponent<TextMesh>().text = $"Camera Status:\n<color={message}>{statusText}..</color>";
+            //cameraStatusIndicator.GetComponent<TextMesh>().text = $"Camera Status:\n<color={message}>{statusText}..</color>";
+
+
+            string s = "Words recognized:\n";
+            string[] words = statusText.Split(' ');
+            bool commandFound = false;
+            foreach (var word in words)
+            {
+                if (commandFound)
+                {
+                    commandFound = false;
+                    s += "<color=green>"+word+"</color>";
+                }
+                else
+                {
+                    s += word;
+                }
+                s += " ";
+                if (String.Equals("hello", word, StringComparison.OrdinalIgnoreCase))
+                {
+                    commandFound = true;
+                }
+            }
+            cameraStatusIndicator.GetComponent<TextMesh>().text = s;
         }
     }
 
@@ -183,6 +210,20 @@ public class SceneOrganiser : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void UpdateLabel(string text)
+    {
+        //lastLabelPlacedText = lastLabelPlaced.GetComponent<TextMesh>();
+        //lastLabelPlacedText.text += text;
+
+        //cameraStatusIndicator.GetComponent<TextMesh>().text = $"Camera Status:\n<color={message}>{statusText}..</color>";
+        //cameraStatusIndicator.GetComponent<TextMesh>().text = $"Camera Status:\n<color={message}>{statusText}..</color>";
+
+        //TextMesh lblText = label.GetComponent<TextMesh>();
+        //lblText.text = "woof";
+
+        SetCameraStatus(text);
     }
 
     /// <summary>
