@@ -166,21 +166,21 @@ public class FaceAnalysis : MonoBehaviour {
             Debug.Log($"Get Person - jsonResponse: {jsonResponse}");
             Candidate_RootObject[] candidate_RootObject = JsonConvert.DeserializeObject<Candidate_RootObject[]>(jsonResponse);
 
-            if (candidate_RootObject.GetLength(0) > 0)
+            // For each face to identify that ahs been submitted, display its candidate
+            foreach (Candidate_RootObject candidateRO in candidate_RootObject)
             {
-                // For each face to identify that ahs been submitted, display its candidate
-                foreach (Candidate_RootObject candidateRO in candidate_RootObject)
+                if (candidateRO.candidates.Count > 0)
                 {
                     StartCoroutine(GetPerson(candidateRO.candidates[0].personId));
-
-                    // Delay the next "GetPerson" call, so all faces candidate are displayed properly
-                    yield return new WaitForSeconds(3);
                 }
-            }
-            else
-            {
-                // Display the name of the person in the UI
-                labelText.text = "I don't know";
+                else
+                {
+                    // Display the name of the person in the UI
+                    labelText.text = "I don't know";
+                }
+
+                // Delay the next "GetPerson" call, so all faces candidate are displayed properly
+                yield return new WaitForSeconds(3);
             }
         }
     }
